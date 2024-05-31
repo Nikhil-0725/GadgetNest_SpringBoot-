@@ -21,8 +21,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ApiResponse<String>> handleInvalidCredentialsException(InvalidCredentialsException ex){
         ApiResponse<String> response = new ApiResponse<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response,HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidAnswerException.class)
+    public ResponseEntity<ApiResponse<String>> handleInvalidAnswerException(InvalidAnswerException ex){
+        ApiResponse<String> response = new ApiResponse<>(false, ex.getMessage(),null);
+        return  new ResponseEntity<>(response,HttpStatus.UNAUTHORIZED);
     }
 }

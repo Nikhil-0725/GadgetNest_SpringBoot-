@@ -2,6 +2,7 @@ package com.gadgetnest.app.service.impl;
 
 import com.gadgetnest.app.entity.User;
 import com.gadgetnest.app.exception.DuplicateEmailException;
+import com.gadgetnest.app.exception.InvalidAnswerException;
 import com.gadgetnest.app.exception.InvalidCredentialsException;
 import com.gadgetnest.app.exception.ResourceNotFoundException;
 import com.gadgetnest.app.repository.UserRepository;
@@ -46,6 +47,20 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new InvalidCredentialsException("Invalid email or password");
         }
+    }
+
+    @Override
+    public User resetPassword(String email, String answer, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for this email : " + email));
+
+        if(!answer.equals(user.getAnswer())){
+            throw new InvalidAnswerException("Invalid Security Answer");
+        }
+
+//        user.setPassword(passwordEncoder.encode(user.getPassword()))
+        user.setPassword(newPassword);
+        return userRepository.save(user);
     }
 
 }

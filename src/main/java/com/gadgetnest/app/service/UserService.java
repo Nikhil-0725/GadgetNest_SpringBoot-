@@ -11,4 +11,6 @@ public interface UserService {
     public User registerUser(User user);
 
     public User loginUser(String email, String password);
+
+    public User resetPassword(String email, String answer, String newPassword);
 }
