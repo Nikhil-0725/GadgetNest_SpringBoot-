@@ -1,6 +1,6 @@
 package com.gadgetnest.app.exception;
 
-import com.gadgetnest.app.utils.ApiResponse;
+import com.gadgetnest.app.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

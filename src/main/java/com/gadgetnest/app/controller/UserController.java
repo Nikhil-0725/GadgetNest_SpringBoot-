@@ -7,16 +7,15 @@ import com.gadgetnest.app.exception.InvalidAnswerException;
 import com.gadgetnest.app.exception.InvalidCredentialsException;
 import com.gadgetnest.app.exception.ResourceNotFoundException;
 import com.gadgetnest.app.service.UserService;
-import com.gadgetnest.app.utils.ApiResponse;
+import com.gadgetnest.app.response.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -30,13 +29,6 @@ public class UserController {
         if(result.hasErrors()){
             return ResponseEntity.badRequest().body(new ApiResponse<>(false, result.getAllErrors().get(0).getDefaultMessage(), null));
         }
-
-//        Optional<User> exisingUser = userService.getUserByEmail(user.getEmail());
-//
-//        if(exisingUser.isPresent()){
-//            return ResponseEntity.status(HttpStatus.OK)
-//                    .body(new ApiResponse<>(true, "Already Registered, Please Login", null));
-//        }
 
         userService.registerUser(user);
 
@@ -63,5 +55,11 @@ public class UserController {
         } catch (InvalidAnswerException | ResourceNotFoundException ex){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse<>(false, ex.getMessage(), null));
         }
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(new ApiResponse<>(true, "User Fetched Successfully",users));
     }
 }

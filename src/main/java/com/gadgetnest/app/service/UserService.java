@@ -2,6 +2,7 @@ package com.gadgetnest.app.service;
 
 import com.gadgetnest.app.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -13,4 +14,6 @@ public interface UserService {
     public User loginUser(String email, String password);
 
     public User resetPassword(String email, String answer, String newPassword);
+
+    public List<User> getAllUsers();
 }

@@ -1,4 +1,4 @@
-package com.gadgetnest.app.utils;
+package com.gadgetnest.app.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
