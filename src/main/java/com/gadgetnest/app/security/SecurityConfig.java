@@ -32,9 +32,11 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/v1/auth/users").authenticated()
-                                .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/forgot-password").permitAll()
-                                .anyRequest().authenticated())
+                        .requestMatchers("/api/v1/auth/users").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/forgot-password").permitAll()
+                        .requestMatchers("/api/v1/category/create-category", "/api/v1/category/update-category/**", "/api/v1/category/delete-category/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/category/get-category", "/api/v1/category/single-category/**").permitAll()
+                        .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

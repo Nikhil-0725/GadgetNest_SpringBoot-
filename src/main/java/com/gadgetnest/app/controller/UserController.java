@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +37,11 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody User user){
+    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody User user, BindingResult result){
+
+        if(result.hasErrors()){
+            return ResponseEntity.badRequest().body(new ApiResponse<>(false, result.getAllErrors().get(0).getDefaultMessage(), null));
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
